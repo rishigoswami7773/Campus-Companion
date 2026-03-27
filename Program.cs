@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+//using Microsoft.EntityFrameworkCore;.
 using Campus_Companion.Data;
 var builder = WebApplication.CreateBuilder(args);
 
