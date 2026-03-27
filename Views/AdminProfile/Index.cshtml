@@ -1,0 +1,83 @@
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Admin Profile";
+}
+
+<div class="row">
+    <div class="col-md-4 mb-4 mb-md-0">
+        <div class="glass-card text-center text-white text-md-start h-100" style="background: linear-gradient(135deg, #4318FF 0%, #111c44 100%); border: none;">
+            <div class="text-center mb-3 mt-2">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=fff&color=4318FF&size=120" alt="Admin Profile" class="rounded-circle shadow-lg border border-3 border-white">
+            </div>
+            <h4 class="text-center text-white mb-1 fw-bold">Admin User</h4>
+            <p class="text-center text-white-50 mb-4 pb-2 border-bottom border-light border-opacity-25">Super Administrator</p>
+            
+            <div class="d-flex flex-column gap-3 px-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-white-50"><i class="fa-regular fa-envelope me-2"></i> Email</span>
+                    <span class="fw-semibold">admin@campus.com</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-white-50"><i class="fa-solid fa-phone me-2"></i> Phone</span>
+                    <span class="fw-semibold">+1 234 567 8900</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-white-50"><i class="fa-solid fa-shield-halved me-2"></i> Status</span>
+                    <span class="badge bg-success">Active</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="glass-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="page-title m-0">Edit Profile</h3>
+                <button class="btn btn-primary shadow-sm"><i class="fa-solid fa-save me-2"></i> Save Changes</button>
+            </div>
+            
+            <form>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-bold small text-uppercase mb-1">First Name</label>
+                        <input type="text" class="form-control form-control-lg bg-light border-0 shadow-none ps-3" value="Admin">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-bold small text-uppercase mb-1">Last Name</label>
+                        <input type="text" class="form-control form-control-lg bg-light border-0 shadow-none ps-3" value="User">
+                    </div>
+                </div>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-bold small text-uppercase mb-1">Email Address</label>
+                        <input type="email" class="form-control form-control-lg bg-light border-0 shadow-none ps-3" value="admin@campus.com">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-bold small text-uppercase mb-1">Phone Number</label>
+                        <input type="text" class="form-control form-control-lg bg-light border-0 shadow-none ps-3" value="+1 234 567 8900">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label text-muted fw-bold small text-uppercase mb-1">Bio / Description</label>
+                    <textarea class="form-control bg-light border-0 shadow-none ps-3" rows="4">Super administrator managing the Campus Companion platform. Responsible for overall system settings, user management, and configuration.</textarea>
+                </div>
+                
+                <hr class="text-muted opacity-25 my-4">
+                
+                <h5 class="mb-3">Security Settings</h5>
+                <div class="row g-3 mb-2">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-bold small text-uppercase mb-1">New Password</label>
+                        <input type="password" class="form-control bg-light border-0 shadow-none ps-3" placeholder="Leave blank to keep current">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted fw-bold small text-uppercase mb-1">Confirm Password</label>
+                        <input type="password" class="form-control bg-light border-0 shadow-none ps-3" placeholder="Confirm new password">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

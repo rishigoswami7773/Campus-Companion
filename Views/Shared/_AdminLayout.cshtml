@@ -275,7 +275,7 @@
         }
 
         /* Responsive */
-        @media (max-width: 991px) {
+        @@media (max-width: 991px) {
             .sidebar {
                 transform: translateX(-100%);
             }
@@ -334,8 +334,7 @@
 
             <div class="menu-label">Settings & Control</div>
             
-            <!-- Adding a dummy link for Filter & Control to show it exists, or could link to a designated view -->
-            <a href="#" class="nav-link-filter">
+            <a href="/FilterControl" class="nav-link-filter">
                 <i class="fa-solid fa-sliders"></i>
                 Filter & Control
             </a>
@@ -381,7 +380,7 @@
                     <i class="fa-solid fa-chevron-down ms-2 d-none d-sm-block text-muted"></i>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2">
-                    <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-user me-2 text-muted"></i> My Profile</a></li>
+                    <li><a class="dropdown-item py-2" href="/AdminProfile"><i class="fa-solid fa-user me-2 text-muted"></i> My Profile</a></li>
                     <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-gear me-2 text-muted"></i> Account Settings</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-right-from-bracket me-2 text-danger"></i> Logout</a></li>
@@ -418,7 +417,7 @@
             });
             
             // If no active class, default dashboard to active
-            if(document.querySelectorAll('.sidebar a.active').length === 0) {
+            if(document.querySelectorAll('.sidebar a.active').length === 0 && (currentPath === '/' || currentPath === '/dashboardadmin')) {
                 document.querySelector('.nav-link-dashboard').classList.add('active');
             }
         });

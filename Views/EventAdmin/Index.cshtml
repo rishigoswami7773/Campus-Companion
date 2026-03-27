@@ -1,2 +1,30 @@
-﻿<h2>Events</h2>
-<a class="btn btn-success">Add Event</a>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Events & Schedule";
+}
+
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title m-0">Event Management</h2>
+        <a href="/EventAdmin/Create" class="btn btn-primary shadow-sm"><i class="fa-solid fa-plus me-2"></i> Add Event</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Event Name</th>
+                    <th>Date & Time</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">Event list is currently empty. Add items to see them here.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,30 +1,49 @@
-﻿@model IEnumerable<TaskItem>
+@model IEnumerable<TaskItem>
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Task Management";
 }
 
-<h2>Task Management</h2>
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title m-0">Task Management</h2>
+        <a href="/TaskAdmin/Create" class="btn btn-primary shadow-sm"><i class="fa-solid fa-plus me-2"></i> Add Task</a>
+    </div>
 
-<a href="/TaskAdmin/Create" class="btn btn-success mb-2">Add Task</a>
-
-<table class="table table-bordered">
-    <tr>
-        <th>Title</th>
-        <th>Date</th>
-        <th>Priority</th>
-        <th>Action</th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Title</td>
-            <td>@item.DueDate.ToShortDateString()</td>
-            <td><span class="badge bg-danger">@item.Priority</span></td>
-            <td>
-                <a href="/TaskAdmin/Delete/@item.Id" class="btn btn-danger btn-sm">Delete</a>
-            </td>
-        </tr>
-    }
-</table>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Priority</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.DueDate.ToShortDateString()</td>
+                            <td><span class="badge bg-danger">@item.Priority</span></td>
+                            <td class="text-end">
+                                <a href="/TaskAdmin/Edit/@item.Id" class="btn btn-sm btn-outline-primary shadow-sm me-1"><i class="fa-solid fa-pen"></i> Edit</a>
+                                <a href="/TaskAdmin/Delete/@item.Id" class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i> Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">No tasks found. Get started by adding a new task!</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

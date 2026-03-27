@@ -1,27 +1,27 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Notice Management";
+    ViewData["Title"] = "Filter & Control";
 }
 
 <div class="glass-card">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title m-0">Notice Management</h2>
-        <a href="/Notice/Create" class="btn btn-primary shadow-sm"><i class="fa-solid fa-plus me-2"></i> Add Notice</a>
+        <h2 class="page-title m-0">System Filter & Control</h2>
+        <button class="btn btn-primary shadow-sm"><i class="fa-solid fa-plus me-2"></i> Add Filter Rule</button>
     </div>
 
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead class="table-light">
                 <tr>
-                    <th>Title</th>
-                    <th>Published Date</th>
-                    <th>Target Audience</th>
+                    <th>Rule Name</th>
+                    <th>Category</th>
+                    <th>Status</th>
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="4" class="text-center py-4 text-muted">No notices available.</td>
+                    <td colspan="4" class="text-center py-4 text-muted">No rules defined yet.</td>
                 </tr>
             </tbody>
         </table>
