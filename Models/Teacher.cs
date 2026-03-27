@@ -1,9 +1,9 @@
-﻿namespace Campus_Companion.Models
+namespace Campus_Companion.Models
 {
     public class Teacher
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Subject { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Subject { get; set; } = string.Empty;
     }
 }

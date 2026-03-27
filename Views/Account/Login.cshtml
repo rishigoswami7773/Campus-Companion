@@ -1,0 +1,44 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card card-3d card-3d-header p-4">
+            <h3 class="mb-3">Student Login</h3>
+
+            @if (TempData["AuthSuccess"] is string ok)
+            {
+                <div class="alert alert-success">@ok</div>
+            }
+            @if (ViewBag.Error is string err)
+            {
+                <div class="alert alert-danger">@err</div>
+            }
+
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" placeholder="student@email.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <button class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <a asp-action="Register" class="btn btn-link mt-3">Create new account</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

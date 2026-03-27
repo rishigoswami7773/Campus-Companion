@@ -1,2 +1,156 @@
-﻿<h2>Events</h2>
-<a class="btn btn-success">Add Event</a>
+@model IEnumerable<ScheduleItem>
+@{
+    ViewData["Title"] = "Schedule";
+}
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@{
+    var selectedCategory = Context.Request.Query["category"].ToString();
+    var fromDate = Context.Request.Query["fromDate"].ToString();
+    var toDate = Context.Request.Query["toDate"].ToString();
+    var subject = Context.Request.Query["subject"].ToString();
+    var selectedDate = ViewBag.SelectedDate as string ?? DateTime.Today.ToString("yyyy-MM-dd");
+    var viewMode = (ViewBag.ViewMode as string ?? "week").ToLowerInvariant();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Schedule</h2>
+    <a asp-action="Create" class="btn btn-primary">Add Event</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3">
+        <input name="subject" class="form-control" placeholder="Subject name" value="@subject" />
+    </div>
+    <div class="col-md-3">
+        <input name="category" class="form-control" placeholder="Category (Lecture/Exam/Event)" value="@selectedCategory" />
+    </div>
+    <div class="col-md-2">
+        <input name="fromDate" type="date" class="form-control" value="@fromDate" />
+    </div>
+    <div class="col-md-2">
+        <input name="toDate" type="date" class="form-control" value="@toDate" />
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-outline-secondary w-100">Filter</button>
+    </div>
+    <div class="col-md-2">
+        <input name="selectedDate" type="date" class="form-control" value="@selectedDate" />
+    </div>
+    <div class="col-md-2">
+        <select name="viewMode" class="form-select">
+            @if (viewMode == "day")
+            {
+                <option value="day" selected="selected">Day View</option>
+            }
+            else
+            {
+                <option value="day">Day View</option>
+            }
+
+            @if (viewMode == "week")
+            {
+                <option value="week" selected="selected">Week View</option>
+            }
+            else
+            {
+                <option value="week">Week View</option>
+            }
+
+            @if (string.IsNullOrWhiteSpace(viewMode))
+            {
+                <option value="" selected="selected">All</option>
+            }
+            else
+            {
+                <option value="">All</option>
+            }
+        </select>
+    </div>
+</form>
+
+<div class="card card-3d card-3d-header card-schedule p-3">
+    <h5 class="mb-3">Schedule / Timetable</h5>
+<table class="table table-striped table-hover table-3d align-middle mb-0">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Category</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="6" class="text-center text-muted py-4">No schedule available.</td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            var isToday = item.Date.Date == DateTime.Today;
+            var rowClass = isToday ? "table-info" : "";
+            var categoryClass = item.Category == "Lecture" ? "bg-primary"
+                : item.Category == "Exam" ? "bg-danger"
+                : "bg-success";
+            <tr class="@rowClass">
+                <td>@item.Title</td>
+                <td>@item.Date.ToString("dd MMM yyyy")</td>
+                <td>@item.Time</td>
+                <td>@item.Location</td>
+                <td><span class="badge @categoryClass">@item.Category</span></td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ScheduleId" class="btn btn-sm btn-outline-secondary mb-1">Edit</a>
+                    <form asp-action="Delete" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@item.ScheduleId" />
+                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+
+@{
+    var weekAnchor = DateTime.TryParse(selectedDate, out var d) ? d.Date : DateTime.Today;
+    var weekStart = weekAnchor.AddDays(-(int)weekAnchor.DayOfWeek);
+    var days = Enumerable.Range(0, 7).Select(i => weekStart.AddDays(i)).ToList();
+}
+
+<div class="card card-3d card-3d-header card-schedule p-3 mt-3">
+    <h5 class="mb-3">Weekly Grid</h5>
+    <div class="row g-2">
+        @foreach (var day in days)
+        {
+            var dayItems = Model.Where(m => m.Date.Date == day.Date).OrderBy(m => m.Time).ToList();
+            <div class="col-md">
+                <div class="p-2 rounded-3 border h-100 @(day.Date == DateTime.Today ? "bg-info bg-opacity-10" : "bg-white")">
+                    <div class="fw-semibold mb-2">@day.ToString("ddd")</div>
+                    @if (!dayItems.Any())
+                    {
+                        <small class="text-muted">No class</small>
+                    }
+                    else
+                    {
+                        foreach (var i in dayItems)
+                        {
+                            var box = i.Category == "Exam" ? "bg-danger" : i.Category == "Lecture" ? "bg-primary" : "bg-success";
+                            <div class="text-white rounded-2 px-2 py-1 mb-2 @box" title="@i.Location">
+                                <div class="small fw-semibold">@i.Title</div>
+                                <div style="font-size:11px;">@i.Time · @i.Location</div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

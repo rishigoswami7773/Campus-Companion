@@ -1,16 +1,18 @@
 @model ScheduleItem
+
 @{
-    ViewData["Title"] = "Add Event";
+    ViewData["Title"] = "Edit Event";
 }
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Add Event</h2>
+<h2>Edit Event</h2>
 
 <form method="post" class="card card-3d p-3">
     @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="ScheduleId" />
     <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
     <div class="mb-2">
@@ -28,13 +30,11 @@
     <div class="mb-2">
         <label asp-for="Time" class="form-label"></label>
         <input asp-for="Time" class="form-control" placeholder="10:00 AM" />
-        <span asp-validation-for="Time" class="text-danger"></span>
     </div>
 
     <div class="mb-2">
         <label asp-for="Location" class="form-label"></label>
         <input asp-for="Location" class="form-control" placeholder="Room / Hall" />
-        <span asp-validation-for="Location" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
@@ -44,11 +44,12 @@
             <option value="Exam">Exam</option>
             <option value="Event">Event</option>
         </select>
-        <span asp-validation-for="Category" class="text-danger"></span>
     </div>
-    <button class="btn btn-primary">Save Event</button>
+
+    <button class="btn btn-primary">Save Changes</button>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
