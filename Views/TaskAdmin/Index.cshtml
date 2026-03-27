@@ -1,0 +1,30 @@
+﻿@model IEnumerable<TaskItem>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Task List</h2>
+
+<a href="/TaskAdmin/Create" class="btn btn-success">Add Task</a>
+
+<table class="table table-bordered mt-3">
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Priority</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.DueDate.ToShortDateString()</td>
+            <td><span class="badge bg-danger">@item.Priority</span></td>
+            <td>
+                <a href="/TaskAdmin/Delete/@item.Id" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

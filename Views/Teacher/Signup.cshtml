@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Teacher Signup";
+}
+
+@{
+    ViewData["Title"] = "Teacher Signup";
+}
+
+<h2 class="text-center">Teacher Signup</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success text-center">@ViewBag.Message</div>
+}
+
+<div class="signup-container">
+    <form method="post" action="/Teacher/Signup">
+
+        <input type="text" name="FirstName" placeholder="First Name" required />
+        <input type="text" name="LastName" placeholder="Last Name" required />
+        <input type="text" name="Username" placeholder="Username" required />
+        <input type="text" name="Subject" placeholder="Subject" required />
+        <input type="password" name="Password" placeholder="Password" required />
+        <input type="text" name="Mobile" placeholder="Mobile Number" required />
+
+        <button type="submit">Sign Up</button>
+
+    </form>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        font-family: Arial;
+    }
+
+    .signup-container {
+        width: 350px;
+        margin: 60px auto;
+        padding: 25px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        color: white;
+        margin-top: 30px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #4facfe;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background: #007bff;
+        }
+</style>
