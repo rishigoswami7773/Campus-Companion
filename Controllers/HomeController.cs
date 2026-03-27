@@ -15,7 +15,7 @@ namespace Campus_Companion.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "DashboardAdmin");
         }
 
         public IActionResult Privacy()
