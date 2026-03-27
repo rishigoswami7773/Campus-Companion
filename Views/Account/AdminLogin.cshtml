@@ -1,0 +1,38 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Admin Login";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card card-3d card-3d-header p-4 border-danger">
+            <h3 class="mb-3 text-danger">Admin Portal Login</h3>
+
+            @if (ViewBag.Error is string err)
+            {
+                <div class="alert alert-danger">@err</div>
+            }
+
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Admin Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="admin@campus.com" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Master Password</label>
+                    <input asp-for="Password" class="form-control" />
+                </div>
+                <button class="btn btn-danger w-100">Login as Admin</button>
+            </form>
+
+            <div class="d-flex justify-content-between mt-3">
+                <a asp-action="Login" class="btn btn-link text-muted">Back to standard student login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

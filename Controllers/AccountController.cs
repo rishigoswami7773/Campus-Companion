@@ -107,6 +107,27 @@ namespace Campus_Companion.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult AdminLogin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AdminLogin(LoginViewModel model)
+        {
+            if (model.Email == "admin@campus.com" && model.Password == "admin123")
+            {
+                HttpContext.Session.SetString("StudentName", "Administrator");
+                HttpContext.Session.SetInt32("StudentId", 0);
+                return RedirectToAction("Index", "DashboardAdmin");
+            }
+            
+            ViewBag.Error = "Invalid administrator credentials.";
+            return View(model);
+        }
+
         private int? GetStudentIdOrNull()
         {
             return HttpContext.Session.GetInt32("StudentId");

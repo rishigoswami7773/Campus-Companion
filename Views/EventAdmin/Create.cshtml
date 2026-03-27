@@ -1,54 +1,5 @@
-@model ScheduleItem
-@{
-    ViewData["Title"] = "Add Event";
-}
-
-@{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
-
-<h2>Add Event</h2>
-
-<form method="post" class="card card-3d p-3">
-    @Html.AntiForgeryToken()
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-
-    <div class="mb-2">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" placeholder="Event title" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Date" class="form-label"></label>
-        <input asp-for="Date" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
-        <span asp-validation-for="Date" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Time" class="form-label"></label>
-        <input asp-for="Time" class="form-control" placeholder="10:00 AM" />
-        <span asp-validation-for="Time" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Location" class="form-label"></label>
-        <input asp-for="Location" class="form-control" placeholder="Room / Hall" />
-        <span asp-validation-for="Location" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Category" class="form-label"></label>
-        <select asp-for="Category" class="form-select">
-            <option value="Lecture">Lecture</option>
-            <option value="Exam">Exam</option>
-            <option value="Event">Event</option>
-        </select>
-        <span asp-validation-for="Category" class="text-danger"></span>
-    </div>
-    <button class="btn btn-primary">Save Event</button>
+﻿<form>
+    <input placeholder="Event Title" class="form-control mb-2" />
+    <input type="date" class="form-control mb-2" />
+    <button class="btn btn-primary">Save</button>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

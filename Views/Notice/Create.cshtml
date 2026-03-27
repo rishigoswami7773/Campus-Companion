@@ -1,44 +1,5 @@
-@model NoticeItem
-@{
-    ViewData["Title"] = "Add Notice";
-}
-
-@{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
-
-<h2>Add Notice</h2>
-
-<form method="post" class="card card-3d p-3">
-    @Html.AntiForgeryToken()
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-
-    <div class="mb-2">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" placeholder="Notice title" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Content" class="form-label"></label>
-        <textarea asp-for="Content" class="form-control" placeholder="Content"></textarea>
-        <span asp-validation-for="Content" class="text-danger"></span>
-    </div>
-
-    <div class="mb-2">
-        <label asp-for="Date" class="form-label"></label>
-        <input asp-for="Date" type="date" class="form-control" />
-        <span asp-validation-for="Date" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Category" class="form-label"></label>
-        <input asp-for="Category" class="form-control" placeholder="Category (Important/Exam/General)" />
-        <span asp-validation-for="Category" class="text-danger"></span>
-    </div>
-    <button class="btn btn-primary">Save Notice</button>
+﻿<form>
+    <input placeholder="Notice Title" class="form-control mb-2" />
+    <textarea class="form-control mb-2"></textarea>
+    <button class="btn btn-primary">Save</button>
 </form>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

@@ -36,7 +36,10 @@
                 <button class="btn btn-primary w-100">Login</button>
             </form>
 
-            <a asp-action="Register" class="btn btn-link mt-3">Create new account</a>
+            <div class="d-flex justify-content-between mt-3">
+                <a asp-action="Register" class="btn btn-link">Create new account</a>
+                <a asp-action="AdminLogin" class="btn btn-link text-danger">Go to Admin Login</a>
+            </div>
         </div>
     </div>
 </div>
