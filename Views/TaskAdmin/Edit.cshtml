@@ -1,6 +1,36 @@
-﻿@{
+@model Campus_Companion.Models.TaskItem
+
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Task";
 }
 
-<h2>Events</h2>
-<a class="btn btn-success">Add Event</a>
+<div class="glass-card p-4">
+    <h2 class="page-title mb-4">Edit Task</h2>
+    
+    <form action="/TaskAdmin/Edit" method="post">
+        <input type="hidden" name="Id" value="@Model?.Id" />
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Task Title</label>
+            <input type="text" name="Title" value="@Model?.Title" class="form-control" required />
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold">Due Date</label>
+            <input type="date" name="DueDate" value="@Model?.DueDate.ToString("yyyy-MM-dd")" class="form-control" required />
+        </div>
+        
+        <div class="mb-4">
+            <label class="form-label fw-bold">Priority</label>
+            <select name="Priority" class="form-select" required>
+                <!option value="High" @(Model?.Priority == "High" ? "selected" : "")>High</!option>
+                <!option value="Medium" @(Model?.Priority == "Medium" ? "selected" : "")>Medium</!option>
+                <!option value="Low" @(Model?.Priority == "Low" ? "selected" : "")>Low</!option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Save Changes</button>
+        <a href="/TaskAdmin" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>

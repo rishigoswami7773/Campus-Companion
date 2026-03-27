@@ -1,3 +1,5 @@
+@model IEnumerable<Campus_Companion.Models.NoticeModel>
+
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Notice Management";
@@ -20,9 +22,27 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td colspan="4" class="text-center py-4 text-muted">No notices available.</td>
-                </tr>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.PublishedDate.ToShortDateString()</td>
+                            <td><span class="badge bg-info text-dark">@item.TargetAudience</span></td>
+                            <td class="text-end">
+                                <a href="/Notice/Edit/@item.Id" class="btn btn-sm btn-outline-primary shadow-sm me-1"><i class="fa-solid fa-pen"></i> Edit</a>
+                                <a href="/Notice/Delete/@item.Id" class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i> Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">No notices available.</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

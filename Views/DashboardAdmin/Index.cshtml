@@ -1,3 +1,4 @@
+@model IEnumerable<Campus_Companion.Models.TaskItem>
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Super Dashboard";
@@ -81,69 +82,67 @@
     <div class="col-lg-8">
         <div class="glass-card h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="fw-bold mb-0">Recent Activity</h5>
-                <a href="#" class="text-decoration-none fw-semibold" style="color: #4318FF;">View All <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                <h5 class="fw-bold mb-0">Manage Tasks</h5>
+                <div>
+                    <a href="/TaskAdmin/Create" class="btn btn-sm btn-primary me-2"><i class="fa-solid fa-plus me-1"></i> Add Task</a>
+                    <a href="/TaskAdmin/Index" class="text-decoration-none fw-semibold" style="color: #4318FF;">View All <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                </div>
             </div>
             
             <div class="table-responsive">
                 <table class="table table-borderless align-middle">
                     <thead class="text-muted" style="border-bottom: 2px solid rgba(0,0,0,0.05);">
                         <tr>
-                            <th class="ps-0 py-3">Action</th>
-                            <th class="py-3">Module</th>
-                            <th class="py-3">Date</th>
-                            <th class="text-end pe-0 py-3">Status</th>
+                            <th class="ps-0 py-3">Task Title</th>
+                            <th class="py-3">Priority</th>
+                            <th class="py-3">Due Date</th>
+                            <th class="text-end pe-0 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.02);">
-                            <td class="ps-0 py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                        <i class="fa-solid fa-check"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-0 fw-semibold">Created New Event</h6>
-                                        <small class="text-muted">By Admin User</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-3 text-muted">Events</td>
-                            <td class="py-3 text-muted">Today, 2:40 PM</td>
-                            <td class="text-end pe-0 py-3"><span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">Completed</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.02);">
-                            <td class="ps-0 py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                        <i class="fa-solid fa-circle-pause"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-0 fw-semibold">Task Assigned</h6>
-                                        <small class="text-muted">By System</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-3 text-muted">Tasks</td>
-                            <td class="py-3 text-muted">Today, 11:20 AM</td>
-                            <td class="text-end pe-0 py-3"><span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">Pending</span></td>
-                        </tr>
-                        <tr>
-                            <td class="ps-0 py-3">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                                        <i class="fa-solid fa-user-plus"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-0 fw-semibold">New User Registration</h6>
-                                        <small class="text-muted">John Doe</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-3 text-muted">Users</td>
-                            <td class="py-3 text-muted">Yesterday, 9:00 AM</td>
-                            <td class="text-end pe-0 py-3"><span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill">Reviewed</span></td>
-                        </tr>
+                        @if(Model != null)
+                        {
+                            foreach(var taskItem in Model)
+                            {
+                                <tr style="border-bottom: 1px solid rgba(0,0,0,0.02);">
+                                    <td class="ps-0 py-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fa-solid fa-list-check"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-semibold">@taskItem.Title</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-3 text-muted">
+                                        @if(taskItem.Priority == "High")
+                                        {
+                                            <span class="badge bg-danger">@taskItem.Priority</span>
+                                        }
+                                        else if (taskItem.Priority == "Medium")
+                                        {
+                                            <span class="badge bg-warning text-dark">@taskItem.Priority</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info text-dark">@taskItem.Priority</span>
+                                        }
+                                    </td>
+                                    <td class="py-3 text-muted">@taskItem.DueDate.ToString("MMM dd, yyyy")</td>
+                                    <td class="text-end pe-0 py-3">
+                                        <a href="/TaskAdmin/Edit/@taskItem.Id" class="btn btn-sm btn-outline-primary me-1"><i class="fa-solid fa-pen"></i> Edit</a>
+                                        <a href="/TaskAdmin/Delete/@taskItem.Id" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">No tasks available. Add some data!</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

@@ -1,13 +1,25 @@
-﻿@{
+@model Campus_Companion.Models.AppUser
+
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Add Teacher";
 }
 
-<h2>Add Teacher</h2>
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title m-0">Add Teacher</h2>
+        <a href="/UserAdmin" class="btn btn-outline-secondary">Back to List</a>
+    </div>
 
-<form method="post">
-    <input name="Name" class="form-control mb-2" placeholder="Name" />
-    <input name="Subject" class="form-control mb-2" placeholder="Subject" />
-    <input name="Email" class="form-control mb-2" placeholder="Email" />
-
-    <button class="btn btn-success">Save</button>
-</form>
+    <form method="post" action="/UserAdmin/CreateTeacher">
+        <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" name="Name" class="form-control" required placeholder="Enter teacher name" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="Email" class="form-control" required placeholder="Enter email address" />
+        </div>
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-save me-2"></i> Save Teacher</button>
+    </form>
+</div>

@@ -1,0 +1,218 @@
+@{
+    Layout = null;
+    bool isAdmin = Context.Request.Cookies["IsAdmin"] == "true";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Companion - Notifications</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4318FF;
+            --secondary-color: #8D54FF;
+            --text-dark: #2b3674;
+            --text-light: #a3aed1;
+            --bg-light: #f4f7fe;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            padding-top: 100px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        .page-header h1 {
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .notification-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+            border-left: 5px solid var(--primary-color);
+            transition: var(--transition);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            animation: slideUp 0.6s ease-in-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .notification-card:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+        }
+        
+        .notification-card.unread {
+            border-left: 5px solid #FF5B5B;
+            background: rgba(255, 91, 91, 0.03);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .icon-box.general { background: rgba(67,24,255,0.1); color: var(--primary-color); }
+        .icon-box.urgent { background: rgba(255,91,91,0.1); color: #FF5B5B; }
+        .icon-box.success { background: rgba(5,205,153,0.1); color: #05CD99; }
+
+        .notif-content {
+            flex-grow: 1;
+        }
+        .notif-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        .notif-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .notif-time {
+            font-size: 0.8rem;
+            color: #a3aed1;
+            font-weight: 500;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        .back-btn:hover {
+            color: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 24px;
+            font-weight: 600;
+        }
+
+        @@keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @@keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar Minimal -->
+    <nav class="navbar navbar-expand-lg fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <i class="fa-solid fa-graduation-cap"></i> Campus Companion
+            </a>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <a href="/" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        
+        <div class="page-header">
+            <h1><i class="fa-regular fa-bell text-primary"></i> Notifications</h1>
+            <p class="text-muted">Stay up to date with the latest alerts and announcements.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                <div class="notification-card unread" style="animation-delay: 0.1s;">
+                    <div class="icon-box urgent"><i class="fa-solid fa-circle-exclamation"></i></div>
+                    <div class="notif-content">
+                        <div class="notif-title">Fee Submission Deadline Reminder</div>
+                        <div class="notif-desc">Please be reminded that the last date for submitting the semester fee is coming up next week. Avoid late fees by submitting on time.</div>
+                        <div class="notif-time"><i class="fa-regular fa-clock me-1"></i> 2 hours ago</div>
+                    </div>
+                </div>
+
+                <div class="notification-card" style="animation-delay: 0.2s;">
+                    <div class="icon-box general"><i class="fa-solid fa-bullhorn"></i></div>
+                    <div class="notif-content">
+                        <div class="notif-title">Upcoming Tech Symposium 2026</div>
+                        <div class="notif-desc">Registration is now open for the annual Tech Symposium. Participate in codeathons, seminars, and networking events.</div>
+                        <div class="notif-time"><i class="fa-regular fa-clock me-1"></i> Yesterday</div>
+                    </div>
+                </div>
+
+                <div class="notification-card" style="animation-delay: 0.3s;">
+                    <div class="icon-box success"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="notif-content">
+                        <div class="notif-title">Assignment Graded</div>
+                        <div class="notif-desc">Your Data Structures Assignment #3 has been graded. Check the dashboard to view your score and feedback.</div>
+                        <div class="notif-time"><i class="fa-regular fa-clock me-1"></i> Oct 15, 2025</div>
+                    </div>
+                </div>
+                
+                <div class="notification-card" style="animation-delay: 0.4s;">
+                    <div class="icon-box general"><i class="fa-solid fa-calendar-check"></i></div>
+                    <div class="notif-content">
+                        <div class="notif-title">Mid-Term Schedules Released</div>
+                        <div class="notif-desc">The mid-term examination schedule for all batches is now available under the Events section.</div>
+                        <div class="notif-time"><i class="fa-regular fa-clock me-1"></i> Oct 12, 2025</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

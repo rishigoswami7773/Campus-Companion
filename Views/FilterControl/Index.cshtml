@@ -1,3 +1,5 @@
+@model IEnumerable<Campus_Companion.Models.FilterRule>
+
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Filter & Control";
@@ -6,7 +8,7 @@
 <div class="glass-card">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="page-title m-0">System Filter & Control</h2>
-        <button class="btn btn-primary shadow-sm"><i class="fa-solid fa-plus me-2"></i> Add Filter Rule</button>
+        <a href="/FilterControl/Create" class="btn btn-primary shadow-sm"><i class="fa-solid fa-plus me-2"></i> Add Filter Rule</a>
     </div>
 
     <div class="table-responsive">
@@ -20,10 +22,32 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td colspan="4" class="text-center py-4 text-muted">No rules defined yet.</td>
-                </tr>
-            </tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var rule in Model)
+                    {
+                        <tr>
+                            <td>@rule.Name</td>
+                            <td><span class="badge bg-secondary">@rule.Category</span></td>
+                            <td>
+                                <div class="form-check form-switch d-inline-block">
+                                    <input class="form-check-input" type="checkbox" role="switch" @(rule.Status == "Active" ? "checked" : "") disabled>
+                                    <label class="form-check-label ps-2">@rule.Status</label>
+                                </div>
+                            </td>
+                            <td class="text-end">
+                                <a href="/FilterControl/Edit/@rule.Id" class="btn btn-sm btn-outline-primary shadow-sm me-1"><i class="fa-solid fa-pen"></i> Edit</a>
+                                <a href="/FilterControl/Delete/@rule.Id" class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i> Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">No rules defined yet.</td>
+                    </tr>
+                }
         </table>
     </div>
 </div>

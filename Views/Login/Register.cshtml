@@ -1,0 +1,206 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Campus Companion</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f4f7fe 0%, #e0e8ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 15px;
+        }
+        .register-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+            width: 100%;
+            max-width: 700px;
+        }
+        .brand-icon {
+            font-size: 3rem;
+            color: #4318FF;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-dark-custom {
+            background: #25282f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 500;
+        }
+        .btn-dark-custom:hover {
+            background: #1a1c22;
+            color: white;
+        }
+        .form-control, .form-select {
+            border-radius: 6px;
+            padding: 10px 15px;
+            background: #ffffff;
+            border: 1px solid #ced4da;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(67, 24, 255, 0.1);
+            border-color: #4318FF;
+        }
+        .custom-label {
+            text-align: center;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: #212529;
+        }
+        .custom-file-upload {
+            display: flex;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            overflow: hidden;
+            background: white;
+        }
+        .custom-file-upload .browse-btn {
+            background: #f8f9fa;
+            border-right: 1px solid #ced4da;
+            padding: 10px 15px;
+            color: #495057;
+            cursor: pointer;
+            margin: 0;
+        }
+        .custom-file-upload .file-text {
+            padding: 10px 15px;
+            color: #212529;
+            flex-grow: 1;
+        }
+        .custom-file-upload input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger py-2 small text-center rounded-3 fw-bold mb-4">
+                <i class="fa-solid fa-triangle-exclamation me-1"></i> @ViewBag.Error
+            </div>
+        }
+
+        <form method="post" action="/Login/Register" id="registerForm">
+            <!-- Full Name -->
+            <div class="mb-4">
+                <label class="custom-label">Full Name</label>
+                <input type="text" name="fullName" class="form-control" required>
+            </div>
+
+            <!-- Mobile & Gender -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <label class="custom-label">Mobile Number</label>
+                    <input type="tel" name="mobile" class="form-control" pattern="[0-9]+" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="custom-label">Gender</label>
+                    <select name="gender" class="form-select" required>
+                        <option value="" disabled selected>Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="mb-4">
+                <label class="custom-label">Profile Picture</label>
+                <div class="custom-file-upload" onclick="document.getElementById('profilePic').click()">
+                    <div class="browse-btn">Browse...</div>
+                    <div class="file-text" id="fileText">No file selected.</div>
+                    <input type="file" id="profilePic" name="profilePic" accept="image/*" onchange="updateFileName(this)">
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="mb-4">
+                <label class="custom-label">Address</label>
+                <textarea name="address" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <!-- Email Address -->
+            <div class="mb-4">
+                <label class="custom-label">Email Address</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <!-- Password & Confirm Password -->
+            <div class="row mb-4">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <label class="custom-label">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" required minlength="6">
+                </div>
+                <div class="col-md-6">
+                    <label class="custom-label">Confirm Password</label>
+                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" required minlength="6">
+                </div>
+            </div>
+
+            <!-- Terms -->
+            <div class="mb-4 d-flex justify-content-center align-items-center">
+                <div class="form-check d-flex align-items-center gap-2">
+                    <input class="form-check-input mt-0" type="checkbox" id="terms" required style="width: 18px; height: 18px;">
+                    <label class="form-check-label text-dark" for="terms">
+                        I agree to the Terms of Service and Privacy Policy
+                    </label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-dark-custom w-100 mb-4">Create Account</button>
+            
+            <!-- Login Link -->
+            <div class="text-center">
+                <span class="text-muted">Already have an account?</span> 
+                <a href="/Login" class="text-primary text-decoration-none">Login</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Scripts for validation and file input -->
+    <script>
+        function updateFileName(input) {
+            const fileText = document.getElementById('fileText');
+            if (input.files && input.files[0]) {
+                fileText.textContent = input.files[0].name;
+            } else {
+                fileText.textContent = 'No file selected.';
+            }
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const pwd = document.getElementById('password').value;
+            const confirm = document.getElementById('confirmPassword').value;
+
+            if (pwd !== confirm) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
+    </script>
+</body>
+</html>

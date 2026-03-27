@@ -1,0 +1,313 @@
+@{
+    Layout = null;
+    bool isAdmin = Context.Request.Cookies["IsAdmin"] == "true";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Companion - Courses</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4318FF;
+            --secondary-color: #8D54FF;
+            --text-dark: #2b3674;
+            --text-light: #a3aed1;
+            --bg-light: #f4f7fe;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            padding-top: 100px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        .page-header h1 {
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        /* Tabs styling */
+        .nav-pills {
+            background: white;
+            border-radius: 50px;
+            padding: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+            display: inline-flex;
+            margin-bottom: 40px;
+        }
+        .nav-pills .nav-link {
+            border-radius: 50px;
+            padding: 10px 30px;
+            color: var(--text-dark);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 5px 15px rgba(67, 24, 255, 0.3);
+        }
+
+        /* Course Cards */
+        .course-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.02);
+            height: 100%;
+            text-align: center;
+        }
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(67, 24, 255, 0.1);
+        }
+        
+        .course-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px;
+            background: rgba(67,24,255,0.05);
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+        .course-card:hover .course-icon {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .course-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .course-desc {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .btn-custom {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            width: 100%;
+        }
+        
+        .btn-outline-custom {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .btn-outline-custom:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 24, 255, 0.3);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        .back-btn:hover {
+            color: var(--secondary-color);
+            transform: translateX(-5px);
+        }
+
+        @@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar Minimal -->
+    <nav class="navbar navbar-expand-lg fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <i class="fa-solid fa-graduation-cap"></i> Campus Companion
+            </a>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <a href="/" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <a href="/" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        
+        <div class="page-header">
+            <h1><i class="fa-solid fa-book-open text-primary"></i> Academic Courses</h1>
+            <p class="text-muted">Explore detailed curriculum and syllabi tailored for your batch.</p>
+        </div>
+
+        <!-- Course Tabs -->
+        <div class="text-center">
+            <ul class="nav nav-pills" id="courseTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="btech-tab" data-bs-toggle="pill" data-bs-target="#btech" type="button" role="tab">B.Tech</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mca-tab" data-bs-toggle="pill" data-bs-target="#mca" type="button" role="tab">MCA</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="bca-tab" data-bs-toggle="pill" data-bs-target="#bca" type="button" role="tab">BCA</button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="courseTabsContent">
+            
+            <!-- B.Tech Content -->
+            <div class="tab-pane fade show active" id="btech" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-solid fa-code"></i></div>
+                            <h4 class="course-title">Data Structures & Algorithms</h4>
+                            <p class="course-desc">Core B.Tech subject covering basic to immense depth data structures implementation.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-solid fa-network-wired"></i></div>
+                            <h4 class="course-title">Computer Networks</h4>
+                            <p class="course-desc">Study the fundamental concepts of networking layering, TCP/IP, and OSI models.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <h4 class="course-title">Operating Systems</h4>
+                            <p class="course-desc">Learn memory management, multi-threading, CPU scheduling in depth.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-solid fa-database"></i></div>
+                            <h4 class="course-title">Database Management</h4>
+                            <p class="course-desc">RDBMS concepts, SQL optimization, Normalization, and structured data handling.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MCA Content -->
+            <div class="tab-pane fade" id="mca" role="tabpanel">
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-brands fa-java"></i></div>
+                            <h4 class="course-title">Advanced Java</h4>
+                            <p class="course-desc">Spring Boot, Microservices, and advanced concept building for MCA graduates.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                            <h4 class="course-title">Software Engineering</h4>
+                            <p class="course-desc">Agile development, System Design, Architecture, SDLC methods.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-solid fa-cloud"></i></div>
+                            <h4 class="course-title">Cloud Computing</h4>
+                            <p class="course-desc">AWS integration, containerization, virtual environments theory.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BCA Content -->
+            <div class="tab-pane fade" id="bca" role="tabpanel">
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-brands fa-html5"></i></div>
+                            <h4 class="course-title">Web Development Basics</h4>
+                            <p class="course-desc">Introduction to HTML, CSS, JavaScript, and Bootstrap framework.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                            <h4 class="course-title">C Programming Basics</h4>
+                            <p class="course-desc">Syntax, pointers, memory allocation, logic building, functional paradigms.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="course-card">
+                            <div class="course-icon"><i class="fa-solid fa-calculator"></i></div>
+                            <h4 class="course-title">Discrete Mathematics</h4>
+                            <p class="course-desc">Core mathematical concepts mapping to computing paradigms.</p>
+                            <button class="btn btn-outline-custom">View Syllabus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

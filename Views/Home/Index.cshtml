@@ -1,8 +1,359 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    Layout = null;
+    bool isAdmin = Context.Request.Cookies["IsAdmin"] == "true";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Companion - Home</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4318FF;
+            --secondary-color: #8D54FF;
+            --text-dark: #2b3674;
+            --text-light: #a3aed1;
+            --bg-light: #f4f7fe;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-dark) !important;
+            margin: 0 10px;
+            position: relative;
+            transition: var(--transition);
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color) !important;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: var(--transition);
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, rgba(67,24,255,0.05) 0%, rgba(141,84,255,0.1) 100%);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .btn-custom {
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            box-shadow: 0 10px 20px rgba(67, 24, 255, 0.3);
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(67, 24, 255, 0.4);
+            color: white;
+        }
+        .btn-outline-custom {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .btn-outline-custom:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Quick Actions - Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            transition: var(--transition);
+            height: 100%;
+            text-align: center;
+        }
+        .glass-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, rgba(67,24,255,0.1), rgba(141,84,255,0.1));
+            color: var(--primary-color);
+        }
+
+        /* Features Section */
+        .features {
+            background: white;
+            padding: 80px 0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+        .feature-item i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 40px 0 20px;
+        }
+        .footer a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .footer a:hover {
+            color: white;
+        }
+        
+        @@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <i class="fa-solid fa-graduation-cap"></i> Campus Companion
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fa-solid fa-bars fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Course">Courses</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Event">Events</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative notification-btn" href="/Notification" style="padding-right: 20px;">
+                            <i class="fa-solid fa-bell fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -20px;">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    @if (isAdmin)
+                    {
+                        <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                            <a class="btn btn-primary-custom btn-sm px-4 rounded-pill fw-bold" href="/DashboardAdmin"><i class="fa-solid fa-shield-halved me-1"></i> Admin Panel</a>
+                        </li>
+                        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                            <a class="btn btn-outline-danger btn-sm px-4 rounded-pill fw-bold" href="/Login/Logout" style="border: 2px solid; padding: 10.5px 28px;"><i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Logout</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+                            <a class="btn btn-outline-custom btn-sm px-4 rounded-pill fw-bold mb-2 mb-lg-0" href="/Login" style="padding: 10px 24px;"><i class="fa-solid fa-right-to-bracket me-1"></i> Sign In</a>
+                        </li>
+                        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                            <a class="btn btn-primary-custom btn-sm px-4 rounded-pill fw-bold" href="/Login/Register"><i class="fa-solid fa-user-plus me-1"></i> Register</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1>Welcome to Campus Companion</h1>
+                    <p>Manage your courses, tasks, and campus activities easily. Everything you need to succeed in one clean, professional dashboard.</p>
+                    <div class="hero-btns">
+                        <a href="#quick-actions" class="btn btn-custom btn-primary-custom"><i class="fa-solid fa-rocket"></i> Get Started</a>
+                        <a href="/Course" class="btn btn-custom btn-outline-custom"><i class="fa-solid fa-book-open"></i> Explore Courses</a>
+                        <a href="/TaskAdmin" class="btn btn-custom btn-outline-custom"><i class="fa-solid fa-list-check"></i> View Assignments</a>
+                        <a href="/DashboardAdmin" class="btn btn-custom btn-outline-custom"><i class="fa-solid fa-chart-line"></i> Check Progress</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section id="quick-actions" class="py-5">
+        <div class="container my-4">
+            <h2 class="text-center fw-bold mb-5">Quick Actions</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card">
+                        <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
+                        <h5 class="fw-bold">Explore Courses</h5>
+                        <p class="text-muted small mb-4">Access details of B.Tech, MCA and BCA.</p>
+                        <a href="/Course" class="btn btn-sm btn-outline-custom rounded-pill w-100 fw-bold py-2">View Courses</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card">
+                        <div class="card-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                        <h5 class="fw-bold">Upcoming Events</h5>
+                        <p class="text-muted small mb-4">Never miss an important campus event.</p>
+                        <a href="/Event" class="btn btn-sm btn-outline-custom rounded-pill w-100 fw-bold py-2">Open Calendar</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card">
+                        <div class="card-icon"><i class="fa-solid fa-bell"></i></div>
+                        <h5 class="fw-bold">Notifications</h5>
+                        <p class="text-muted small mb-4">Stay updated with official announcements.</p>
+                        <a href="/Notification" class="btn btn-sm btn-outline-custom rounded-pill w-100 fw-bold py-2">Read Notices</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card">
+                        <div class="card-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+                        <h5 class="fw-bold">Submit Task</h5>
+                        <p class="text-muted small mb-4">Upload and track your assignments.</p>
+                        <a href="/TaskAdmin" class="btn btn-sm btn-outline-custom rounded-pill w-100 fw-bold py-2">Submit Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-md-3 feature-item">
+                    <i class="fa-solid fa-laptop-code"></i>
+                    <h5 class="fw-bold">Easy Learning</h5>
+                    <p class="text-muted small">Intuitive UI designed for distraction-free education.</p>
+                </div>
+                <div class="col-md-3 feature-item">
+                    <i class="fa-solid fa-list-check"></i>
+                    <h5 class="fw-bold">Task Management</h5>
+                    <p class="text-muted small">Organize and prioritize your daily assignments effortlessly.</p>
+                </div>
+                <div class="col-md-3 feature-item">
+                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <h5 class="fw-bold">Event Tracking</h5>
+                    <p class="text-muted small">Keep a clear schedule of what's happening on campus.</p>
+                </div>
+                <div class="col-md-3 feature-item">
+                    <i class="fa-solid fa-bell-concierge"></i>
+                    <h5 class="fw-bold">Notifications</h5>
+                    <p class="text-muted small">Real-time alerts for deadlines and important notices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                    <h5 class="fw-bold mb-0"><i class="fa-solid fa-graduation-cap text-primary"></i> Campus Companion</h5>
+                    <p class="small text-muted mt-2 mb-0">&copy; 2026 Campus Companion. All rights reserved.</p>
+                </div>
+                <div class="col-md-4 text-center mb-3 mb-md-0">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#" class="small">Privacy Policy</a></li>
+                        <li class="list-inline-item text-muted">|</li>
+                        <li class="list-inline-item"><a href="#" class="small">Terms of Service</a></li>
+                        <li class="list-inline-item text-muted">|</li>
+                        <li class="list-inline-item"><a href="#" class="small">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <a href="#" class="me-3 fs-5"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="me-3 fs-5"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="fs-5"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

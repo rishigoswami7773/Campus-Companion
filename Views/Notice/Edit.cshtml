@@ -1,0 +1,32 @@
+@model Campus_Companion.Models.NoticeModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Notice";
+}
+
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title m-0">Edit Notice</h2>
+        <a href="/Notice" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+
+    <form method="post" action="/Notice/Edit">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <div class="mb-3">
+            <label class="form-label">Notice Title</label>
+            <input type="text" name="Title" class="form-control" value="@Model.Title" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Target Audience</label>
+            <select name="TargetAudience" class="form-select" required>
+                <option value="All Students" selected="@(Model.TargetAudience == "All Students")">All Students</option>
+                <option value="Teachers" selected="@(Model.TargetAudience == "Teachers")">Teachers</option>
+                <option value="B.Tech Students" selected="@(Model.TargetAudience == "B.Tech Students")">B.Tech Students</option>
+                <option value="MCA Students" selected="@(Model.TargetAudience == "MCA Students")">MCA Students</option>
+                <option value="BCA Students" selected="@(Model.TargetAudience == "BCA Students")">BCA Students</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save me-2"></i> Update Notice</button>
+    </form>
+</div>

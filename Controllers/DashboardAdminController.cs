@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+
+using Campus_Companion.Filters;
 
 namespace Campus_Companion.Controllers
 {
-    //[Area("Admin")]
-
+    [AdminAuth]
     public class DashboardAdminController : Controller
     {
         public IActionResult Index()
         {
-            return View();
+            // Pass the static tasks list from TaskAdminController
+            return View(TaskAdminController.Tasks);
         }
     }
 }

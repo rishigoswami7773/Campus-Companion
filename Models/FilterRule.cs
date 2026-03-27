@@ -1,13 +1,10 @@
-using System;
-
 namespace Campus_Companion.Models
 {
-    public class EventModel
+    public class FilterRule
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime EventDate { get; set; }
-        public string Location { get; set; }
+        public string Category { get; set; }
         public string Status { get; set; }
     }
 }

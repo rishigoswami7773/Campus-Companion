@@ -1,5 +1,32 @@
-﻿<form>
-    <input placeholder="Notice Title" class="form-control mb-2" />
-    <textarea class="form-control mb-2"></textarea>
-    <button class="btn btn-primary">Save</button>
-</form>
+@model Campus_Companion.Models.NoticeModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Add Notice";
+}
+
+<div class="glass-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title m-0">Add Notice</h2>
+        <a href="/Notice" class="btn btn-outline-secondary">Back to List</a>
+    </div>
+
+    <form method="post" action="/Notice/Create">
+        <div class="mb-3">
+            <label class="form-label">Notice Title</label>
+            <input type="text" name="Title" class="form-control" required placeholder="Enter notice title" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Target Audience</label>
+            <select name="TargetAudience" class="form-select" required>
+                <option value="">Select Audience</option>
+                <option value="All Students">All Students</option>
+                <option value="Teachers">Teachers</option>
+                <option value="B.Tech Students">B.Tech Students</option>
+                <option value="MCA Students">MCA Students</option>
+                <option value="BCA Students">BCA Students</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save me-2"></i> Publish Notice</button>
+    </form>
+</div>

@@ -1,3 +1,5 @@
+@model IEnumerable<Campus_Companion.Models.EventModel>
+
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Events & Schedule";
@@ -21,10 +23,28 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td colspan="5" class="text-center py-4 text-muted">Event list is currently empty. Add items to see them here.</td>
-                </tr>
-            </tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.EventDate.ToShortDateString()</td>
+                            <td>@item.Location</td>
+                            <td><span class="badge @(item.Status == "Upcoming" ? "bg-primary" : "bg-secondary")">@item.Status</span></td>
+                            <td class="text-end">
+                                <a href="/EventAdmin/Edit/@item.Id" class="btn btn-sm btn-outline-primary shadow-sm me-1"><i class="fa-solid fa-pen"></i> Edit</a>
+                                <a href="/EventAdmin/Delete/@item.Id" class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i> Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">Event list is currently empty. Add items to see them here.</td>
+                    </tr>
+                }            </tbody>
         </table>
     </div>
 </div>

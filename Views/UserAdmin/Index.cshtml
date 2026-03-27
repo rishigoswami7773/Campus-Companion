@@ -1,3 +1,5 @@
+@model IEnumerable<Campus_Companion.Models.AppUser>
+
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "User Control";
@@ -24,42 +26,36 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">R</div>
-                            <div>
-                                <h6 class="mb-0">Rishi</h6>
-                                <small class="text-muted">Student</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="badge bg-info text-dark">Student</span></td>
-                    <td>rishi@gmail.com</td>
-                    <td><span class="badge bg-success">Active</span></td>
-                    <td class="text-end">
-                        <a href="/UserAdmin/Edit/1" class="btn btn-sm btn-outline-primary shadow-sm me-1"><i class="fa-solid fa-pen"></i> Edit</a>
-                        <a href="/UserAdmin/Delete/1" class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i> Delete</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <div class="rounded-circle bg-success text-white d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">H</div>
-                            <div>
-                                <h6 class="mb-0">Harsh</h6>
-                                <small class="text-muted">Teacher</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="badge bg-warning text-dark">Teacher</span></td>
-                    <td>harsh@gmail.com</td>
-                    <td><span class="badge bg-success">Active</span></td>
-                    <td class="text-end">
-                        <a href="/UserAdmin/Edit/2" class="btn btn-sm btn-outline-primary shadow-sm me-1"><i class="fa-solid fa-pen"></i> Edit</a>
-                        <a href="/UserAdmin/Delete/2" class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i> Delete</a>
-                    </td>
-                </tr>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle @(user.Role == "Teacher" ? "bg-success" : "bg-primary") text-white d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">@(user.Name.Substring(0, 1).ToUpper())</div>
+                                    <div>
+                                        <h6 class="mb-0">@user.Name</h6>
+                                        <small class="text-muted">@user.Role</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge @(user.Role == "Teacher" ? "bg-warning" : "bg-info") text-dark">@user.Role</span></td>
+                            <td>@user.Email</td>
+                            <td><span class="badge @(user.Status == "Active" ? "bg-success" : "bg-secondary")">@user.Status</span></td>
+                            <td class="text-end">
+                                <a href="/UserAdmin/Edit/@user.Id" class="btn btn-sm btn-outline-primary shadow-sm me-1"><i class="fa-solid fa-pen"></i> Edit</a>
+                                <a href="/UserAdmin/Delete/@user.Id" class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i> Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">No users available.</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
