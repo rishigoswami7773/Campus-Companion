@@ -87,6 +87,26 @@ namespace Campus_Companion.Controllers
             return RedirectToAction(nameof(Login));
         }
 
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ForgotPassword(string Email)
+        {
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                ViewBag.Error = "Please enter a valid email address.";
+                return View();
+            }
+
+            ViewBag.Message = "If an account exists for this email, a password reset link has been sent.";
+            return View();
+        }
+
         private int? GetStudentIdOrNull()
         {
             return HttpContext.Session.GetInt32("StudentId");
