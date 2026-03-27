@@ -20,7 +20,6 @@
     <h2>Tasks</h2>
     <div class="d-flex gap-2">
         <a asp-action="ExportCsv" class="btn btn-outline-success">⬇ Export CSV</a>
-        <a asp-action="Create" class="btn btn-primary">＋ Add Task</a>
     </div>
 </div>
 
@@ -117,14 +116,13 @@
                 <th>Due Date</th>
                 <th>Priority</th>
                 <th>Status</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @if (!Model.Any())
             {
                 <tr>
-                    <td colspan="5" class="text-center text-muted py-4">No tasks yet.</td>
+                    <td colspan="4" class="text-center text-muted py-4">No tasks yet.</td>
                 </tr>
             }
             @foreach (var item in Model)
@@ -139,19 +137,6 @@
                     <td>@item.DueDate.ToString("dd MMM yyyy")</td>
                     <td><span class="badge @priorityBadgeClass">@item.Priority</span></td>
                     <td>@item.Status</td>
-                    <td class="d-flex gap-2">
-                        <a asp-action="Edit" asp-route-id="@item.TaskId" class="btn btn-sm btn-outline-secondary">✏ Edit</a>
-                        <form asp-action="ToggleStatus" method="post">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@item.TaskId" />
-                            <button class="btn btn-sm btn-outline-primary">✔ Done</button>
-                        </form>
-                        <form asp-action="Delete" method="post">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@item.TaskId" />
-                            <button class="btn btn-sm btn-outline-danger">🗑 Delete</button>
-                        </form>
-                    </td>
                 </tr>
             }
         </tbody>
