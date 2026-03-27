@@ -44,7 +44,7 @@ namespace Campus_Companion.Controllers
             HttpContext.Session.SetString("StudentName", student.Name);
             HttpContext.Session.SetInt32("StudentId", student.StudentId);
 
-            return RedirectToAction("Index", "DashboardAdmin");
+            return RedirectToAction("Index", "StudentDashboard");
         }
 
         [HttpGet]

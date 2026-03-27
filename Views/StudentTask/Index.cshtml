@@ -1,0 +1,144 @@
+@model IEnumerable<TaskItem>
+
+@{
+    ViewData["Title"] = "Tasks";
+}
+
+@{
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+@{
+    var selectedPriority = Context.Request.Query["priority"].ToString();
+    var selectedStatus = Context.Request.Query["status"].ToString();
+    var fromDate = Context.Request.Query["fromDate"].ToString();
+    var toDate = Context.Request.Query["toDate"].ToString();
+    var search = Context.Request.Query["search"].ToString();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Tasks</h2>
+    <div class="d-flex gap-2">
+        <a asp-action="ExportCsv" class="btn btn-outline-success">⬇ Export CSV</a>
+    </div>
+</div>
+
+<div class="card card-3d card-3d-header card-tasks p-3">
+    <h5 class="mb-3">Task Filters & List</h5>
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-md-3">
+            <select name="priority" class="form-select">
+                @if (string.IsNullOrWhiteSpace(selectedPriority))
+                {
+                    <option value="" selected="selected">All Priorities</option>
+                }
+                else
+                {
+                    <option value="">All Priorities</option>
+                }
+
+                @if (selectedPriority == "High")
+                {
+                    <option value="High" selected="selected">High</option>
+                }
+                else
+                {
+                    <option value="High">High</option>
+                }
+
+                @if (selectedPriority == "Medium")
+                {
+                    <option value="Medium" selected="selected">Medium</option>
+                }
+                else
+                {
+                    <option value="Medium">Medium</option>
+                }
+
+                @if (selectedPriority == "Low")
+                {
+                    <option value="Low" selected="selected">Low</option>
+                }
+                else
+                {
+                    <option value="Low">Low</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                @if (string.IsNullOrWhiteSpace(selectedStatus))
+                {
+                    <option value="" selected="selected">All Status</option>
+                }
+                else
+                {
+                    <option value="">All Status</option>
+                }
+
+                @if (selectedStatus == "Pending")
+                {
+                    <option value="Pending" selected="selected">Pending</option>
+                }
+                else
+                {
+                    <option value="Pending">Pending</option>
+                }
+
+                @if (selectedStatus == "Completed")
+                {
+                    <option value="Completed" selected="selected">Completed</option>
+                }
+                else
+                {
+                    <option value="Completed">Completed</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input name="fromDate" type="date" class="form-control" value="@fromDate" />
+        </div>
+        <div class="col-md-2">
+            <input name="toDate" type="date" class="form-control" value="@toDate" />
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-secondary w-100">Filter</button>
+        </div>
+        <div class="col-md-6">
+            <input name="search" class="form-control" value="@search" placeholder="Search task title / description" />
+        </div>
+    </form>
+
+    <table class="table table-striped table-hover table-3d align-middle">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">No tasks yet.</td>
+                </tr>
+            }
+            @foreach (var item in Model)
+            {
+                var isOverdue = item.Status == ItemStatus.Pending && item.DueDate.Date < DateTime.Today;
+                var isUpcoming = item.Status == ItemStatus.Pending && item.DueDate.Date >= DateTime.Today && item.DueDate.Date <= DateTime.Today.AddDays(2);
+                var priorityBadgeClass = item.Priority == TaskPriority.High
+                    ? "text-bg-danger"
+                    : item.Priority == TaskPriority.Medium ? "text-bg-warning" : "text-bg-success";
+                <tr class="@(isOverdue ? "table-danger" : isUpcoming ? "table-warning" : "")">
+                    <td>@item.Title</td>
+                    <td>@item.DueDate.ToString("dd MMM yyyy")</td>
+                    <td><span class="badge @priorityBadgeClass">@item.Priority</span></td>
+                    <td>@item.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

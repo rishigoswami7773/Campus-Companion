@@ -69,8 +69,8 @@ using (var scope = app.Services.CreateScope())
 
 
 app.MapControllerRoute(
-    name: "admin",
-    pattern: "{controller=DashboardAdmin}/{action=Index}/{id?}"
+    name: "student",
+    pattern: "{controller=StudentDashboard}/{action=Index}/{id?}"
 );
 
 app.MapControllerRoute(

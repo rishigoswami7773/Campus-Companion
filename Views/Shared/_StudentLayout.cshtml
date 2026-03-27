@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Campus Companion</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Campus_Companion.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <div class="admin-sidebar text-white p-3" style="width:250px; min-height:100vh;">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h4 class="m-0">Campus Companion</h4>
+            </div>
+
+            <ul class="nav flex-column gap-2 mt-4">
+                <li>
+                    <a href="/StudentDashboard" class="admin-link text-white text-decoration-none">
+                        <span class="admin-icon">🏠</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/Account/Profile" class="admin-link text-white text-decoration-none">
+                        <span class="admin-icon">👤</span>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/StudentTask" class="admin-link text-white text-decoration-none">
+                        <span class="admin-icon">✅</span>
+                        <span>Tasks</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/StudentEvent" class="admin-link text-white text-decoration-none">
+                        <span class="admin-icon">📅</span>
+                        <span>Schedule</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/StudentNotice" class="admin-link text-white text-decoration-none">
+                        <span class="admin-icon">📢</span>
+                        <span>Notices</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="mt-4">
+                <button type="button" id="themeToggle" class="btn btn-sm btn-outline-light w-100">
+                    Dark mode
+                </button>
+            </div>
+
+            <div class="mt-2 d-grid gap-2">
+                <a href="/Account/Login" class="btn btn-sm btn-outline-light">Login</a>
+                <a href="/Account/Logout" class="btn btn-sm btn-light">Logout</a>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-4 w-100 admin-content">
+            <div class="card card-3d p-3 mb-3 d-flex flex-row justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">Student Dashboard</h5>
+                    <small class="text-muted">Productivity portal for students</small>
+                </div>
+                <div class="text-muted small">Hello, @Context.Session.GetString("StudentName")</div>
+            </div>
+            <main role="main">
+                @RenderBody()
+            </main>
+
+            <footer class="border-top mt-4 pt-3 text-muted">
+                <div class="container px-0">&copy; 2026 - Campus Companion</div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        (function () {
+            var saved = localStorage.getItem("theme");
+            if (saved === "dark") {
+                document.body.classList.add("dark-theme");
+            }
+
+            var btn = document.getElementById("themeToggle");
+            if (!btn) return;
+
+            function updateBtn() {
+                btn.textContent = document.body.classList.contains("dark-theme") ? "Light mode" : "Dark mode";
+            }
+
+            btn.addEventListener("click", function () {
+                document.body.classList.toggle("dark-theme");
+                localStorage.setItem("theme", document.body.classList.contains("dark-theme") ? "dark" : "light");
+                updateBtn();
+            });
+
+            updateBtn();
+
+            var path = window.location.pathname.toLowerCase();
+            document.querySelectorAll(".admin-link").forEach(function (link) {
+                var href = (link.getAttribute("href") || "").toLowerCase();
+                if (href && path.startsWith(href)) {
+                    link.classList.add("active");
+                }
+            });
+        })();
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
