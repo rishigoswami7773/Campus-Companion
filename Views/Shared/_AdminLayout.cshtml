@@ -1,57 +1,428 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Admin Panel</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Admin Panel - Campus Companion</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        :root {
+            --primary-bg: #f4f7fe;
+            --sidebar-bg: #111c44;
+            --sidebar-hover: rgba(255, 255, 255, 0.08);
+            --sidebar-active: #4318FF;
+            --text-main: #2b3674;
+            --text-muted: #a3aed1;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         body {
-            background: #f5f6fa;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
+        /* Sidebar Styling */
         .sidebar {
-            width: 250px;
+            width: 280px;
             height: 100vh;
-            background: #2f3640;
+            background: var(--sidebar-bg);
             color: white;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 1000;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
         }
 
-            .sidebar a {
-                color: white;
-                display: block;
-                padding: 12px;
-                text-decoration: none;
-            }
+        .sidebar-brand {
+            padding: 30px 24px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+        }
 
-                .sidebar a:hover {
-                    background: #40739e;
-                }
+        .sidebar-brand i {
+            color: #4318FF;
+            font-size: 1.8rem;
+        }
+
+        .sidebar-menu {
+            flex-grow: 1;
+            padding: 0 16px;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin: 24px 0 12px 16px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar a {
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            gap: 14px;
+        }
+        
+        .sidebar a i {
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            color: white;
+            background: var(--sidebar-hover);
+        }
+
+        .sidebar a.active {
+            background: var(--sidebar-active);
+            box-shadow: 0 4px 12px rgba(67, 24, 255, 0.3);
+        }
+
+        /* Main Content Wrapper */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        /* Top Navbar */
+        .topbar {
+            height: 80px;
+            padding: 0 30px;
+            background: rgba(244, 247, 254, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .page-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 30px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            width: 300px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .search-bar i {
+            color: #a3aed1;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .topbar-btn {
+            background: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a3aed1;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        .topbar-btn:hover {
+            color: var(--sidebar-active);
+            transform: translateY(-2px);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 10px;
+            height: 10px;
+            background: #FF5B5B;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        .profile-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 12px 6px 6px;
+            border-radius: 30px;
+            background: white;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            transition: var(--transition);
+        }
+
+        .profile-dropdown:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .profile-role {
+            font-size: 0.75rem;
+            color: #a3aed1;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        /* Reusable Card Component */
+        .glass-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(20px);
+            padding: 24px;
+            transition: var(--transition);
+        }
+        
+        .glass-card:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .mobile-toggle {
+                display: block !important;
+            }
+        }
+        
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="d-flex">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <a href="#" class="sidebar-brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Campus Admin
+        </a>
 
-        <!-- Sidebar -->
-        <div class="sidebar p-3">
-            <h4>Campus Admin</h4>
+        <div class="sidebar-menu">
+            <div class="menu-label">Menu</div>
+            <a href="/DashboardAdmin" class="nav-link-dashboard">
+                <i class="fa-solid fa-chart-pie"></i>
+                Dashboard
+            </a>
+            
+            <a href="/TaskAdmin" class="nav-link-task">
+                <i class="fa-solid fa-list-check"></i>
+                Tasks Management
+            </a>
+            
+            <a href="/EventAdmin" class="nav-link-event">
+                <i class="fa-solid fa-calendar-days"></i>
+                Events & Schedule
+            </a>
+            
+            <a href="/Notice" class="nav-link-notice">
+                <i class="fa-solid fa-bullhorn"></i>
+                Notice Management
+            </a>
 
-            <a href="/DashboardAdmin">Dashboard</a>
-            <a href="/TaskAdmin">Tasks</a>
-            <a href="/EventAdmin">Events</a>
-            <a href="/NoticeAdmin">Notices</a>
-            <a href="/UserAdmin">Users</a>
+            <div class="menu-label">Settings & Control</div>
+            
+            <!-- Adding a dummy link for Filter & Control to show it exists, or could link to a designated view -->
+            <a href="#" class="nav-link-filter">
+                <i class="fa-solid fa-sliders"></i>
+                Filter & Control
+            </a>
+
+            <a href="/UserAdmin" class="nav-link-user">
+                <i class="fa-solid fa-users-gear"></i>
+                User Control
+            </a>
         </div>
+    </nav>
 
-        <!-- Content -->
-        <div class="p-4 w-100">
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="search-bar d-none d-md-flex">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Search everywhere...">
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <button class="topbar-btn" title="Filter Settings">
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+                
+                <button class="topbar-btn" title="Notifications">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-badge"></span>
+                </button>
+
+                <div class="profile-dropdown dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=4318FF&color=fff" alt="Profile" class="profile-img">
+                    <div class="profile-info d-none d-sm-flex">
+                        <span class="profile-name">Admin User</span>
+                        <span class="profile-role">Super Admin</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down ms-2 d-none d-sm-block text-muted"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 mt-2">
+                    <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-user me-2 text-muted"></i> My Profile</a></li>
+                    <li><a class="dropdown-item py-2" href="#"><i class="fa-solid fa-gear me-2 text-muted"></i> Account Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item py-2 text-danger" href="#"><i class="fa-solid fa-right-from-bracket me-2 text-danger"></i> Logout</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <main class="content-area">
             @RenderBody()
-        </div>
-
+        </main>
+        
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        // Simple script to highlight active menu item based on current URL
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname.toLowerCase();
+            const links = document.querySelectorAll('.sidebar a');
+            
+            links.forEach(link => {
+                const linkPath = link.getAttribute('href').toLowerCase();
+                if(linkPath !== '#' && currentPath.includes(linkPath) && linkPath !== '/') {
+                    link.classList.add('active');
+                } else if (currentPath === '/' && linkPath === '/dashboardadmin') {
+                    // Fallback
+                    link.classList.add('active');
+                }
+            });
+            
+            // If no active class, default dashboard to active
+            if(document.querySelectorAll('.sidebar a.active').length === 0) {
+                document.querySelector('.nav-link-dashboard').classList.add('active');
+            }
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
